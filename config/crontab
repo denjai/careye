@@ -1,0 +1,1 @@
+0 9,12,16,20,23 * * * php /home/app/src/bin/console app:process-cars >/dev/null 2>&1

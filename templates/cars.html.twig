@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>CARS</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Remote ID</th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Updated</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for car in cars %}
+            <tr>
+                <td><a href="{{ path('car-info', {id: car.id}) }}" target="_blank">{{ car.id }}</a></td>
+                <td>
+                    <a href="https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv={{ car.remoteId }}" target="_blank">{{ car.remoteId }}</a>
+                </td>
+                <td>{{ car.title }}</td>
+                <td>{{ car.price }}</td>
+                <td>{{ car.updated is empty ? "" : car.updated |date('Y-m-d H:i:s') }}</td>
+                <td>{{ car.created is empty ? "" : car.created|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

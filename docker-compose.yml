@@ -1,0 +1,14 @@
+services:
+  ubuntu-setup:
+    container_name: php8_full
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+      - "80:80"
+      - "5432:5432"
+    volumes:
+      - .:/home/app/src:delegated
+      - /home/app/src/vendor # ignore vendor folder
+      - /home/app/src/var/cache # ignore cache folder

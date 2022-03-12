@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:framework="http://symfony.com/schema/dic/symfony"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        https://symfony.com/schema/dic/services/services-1.0.xsd
+        http://symfony.com/schema/dic/symfony
+        https://symfony.com/schema/dic/symfony/symfony-1.0.xsd">
+
+    <parameters>
+        <!-- array/collection parameters -->
+        <parameter key="app.car_check_list" type="collection">
+            <parameter type="string">11640854777795008</parameter>
+            <parameter type="string">11646159262209449</parameter>
+            <parameter type="string">11594233730842048</parameter>
+            <parameter type="string">11362075854267260</parameter>
+            <parameter type="string">11640689930129860</parameter>
+            <parameter type="string">11621334781951056</parameter>
+            <parameter type="string">11633767000519518</parameter>
+            <parameter type="string">11636823176970109</parameter>
+            <parameter type="string">11611422970570216</parameter>
+            <parameter type="string">11640432194149521</parameter>
+            <parameter type="string">11646457615233376</parameter>
+            <parameter type="string">11589399971611806</parameter>
+            <parameter type="string">11637327867539647</parameter>
+            <parameter type="string">11624038059322066</parameter>
+            <parameter type="string">11422556894849978</parameter>
+            <parameter type="string">11624089160658815</parameter>
+        </parameter>
+    </parameters>
+
+    <!-- ... -->
+</container>
