@@ -44,7 +44,7 @@ class CarController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $cars = $this->carRepository->findAll();
+        $cars = $this->carRepository->findBy(['user' => $this->getUser()]);
         //TODO add pagination
         return $this->render('cars.html.twig', ['cars' => $cars]);
     }
@@ -56,7 +56,7 @@ class CarController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $car = $this->carRepository->find($id);
+        $car = $this->carRepository->findBy(['id' => $id, 'user' => $this->getUser()]);
         $carHistory = $this->carHistoryRepository->findBy(['car' => $car]);
 
         return $this->render('car.html.twig', ['car' => $car, 'carHistory' => $carHistory]);
@@ -82,14 +82,14 @@ class CarController extends AbstractController
                 $car = $this->carResultTransformer
                     ->transform($carInfo)
                     ->setRemoteId($id)
+                    ->setUser($this->getUser())
                 ;
                 $this->entityManager->persist($car);
                 $this->entityManager->flush();
             }
         } catch (Exception $exception) {
-            return new Response($exception->getMessage());
             //TODO show error message on page
-            // $this->session->getFlashBag()->add('error', 'user.logout');
+            // $this->session->getFlashBag()->add('error', $exception->getMessage());
         }
 
         return $this->redirectToRoute('list-cars');

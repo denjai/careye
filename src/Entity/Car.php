@@ -6,11 +6,13 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 use Evp\Component\Money\Money;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class Car
 {
     private int $id;
     private string $remoteId;
+    private UserInterface $user;
     private string $title;
     private string $amount;
     private string $currency;
@@ -42,6 +44,17 @@ class Car
     public function setRemoteId(string $remoteId): self
     {
         $this->remoteId = $remoteId;
+        return $this;
+    }
+
+    public function getUser(): UserInterface
+    {
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user): self
+    {
+        $this->user = $user;
         return $this;
     }
 

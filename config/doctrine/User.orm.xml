@@ -13,6 +13,8 @@
         <field name="roles" type="json"/>
         <field name="password"  type="string"/>
         <field name="registered" type="datetime_immutable"/>
+
+        <one-to-many field="cars" target-entity="App\Entity\Car" mapped-by="user"/>
     </entity>
 
 </doctrine-mapping>

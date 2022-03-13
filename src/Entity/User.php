@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -14,11 +16,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $username;
     private array $roles = [];
     private string $password;
+    private Collection $cars;
     private DateTimeImmutable $registered;
 
     public function __construct()
     {
         $this->registered = new DateTimeImmutable();
+        $this->cars = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,6 +51,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->registered = $registered;
 
+        return $this;
+    }
+
+    public function getCars(): Collection
+    {
+        return $this->cars;
+    }
+
+    public function setCars(Collection $cars): self
+    {
+        $this->cars = $cars;
         return $this;
     }
 
