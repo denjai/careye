@@ -2,6 +2,10 @@
 
 {% block body %}
     <h1>CARS</h1>
+    <form method="post" action="{{ path('add-car') }}">
+        <input type="text" name="id">
+        <button type="submit">Add new car</button>
+    </form>
     <table>
         <thead>
             <tr>
