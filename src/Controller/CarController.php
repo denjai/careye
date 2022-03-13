@@ -42,6 +42,8 @@ class CarController extends AbstractController
      */
     public function listCars(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $cars = $this->carRepository->findAll();
         //TODO add pagination
         return $this->render('cars.html.twig', ['cars' => $cars]);
@@ -52,6 +54,8 @@ class CarController extends AbstractController
      */
     public function getCar(int $id): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $car = $this->carRepository->find($id);
         $carHistory = $this->carHistoryRepository->findBy(['car' => $car]);
 
@@ -63,6 +67,7 @@ class CarController extends AbstractController
      */
     public function addCar(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $id = $request->request->get('id');
 
         if (preg_match('/\d{15,22}/', $id, $matches)) {
