@@ -75,7 +75,6 @@ class CarController extends AbstractController
         }
 
         try {
-            throw new Exception('rekt');
             $carInfo = $this->carClient->getCarInfo($id);
             $car = $this->carRepository->findOneBy(['remoteId' => $id]);
 
