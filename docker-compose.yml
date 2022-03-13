@@ -9,6 +9,8 @@ services:
       - "80:80"
       - "5432:5432"
     volumes:
-      - .:/home/app/src:delegated
-      - /home/app/src/vendor # ignore vendor folder
-      - /home/app/src/var/cache # ignore cache folder
+      - /home/doncho/careye:/home/app/src
+      - db:/var/lib/postgresql/13/main
+volumes:
+  db:
+    external: true
