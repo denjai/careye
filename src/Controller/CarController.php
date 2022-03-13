@@ -75,6 +75,7 @@ class CarController extends AbstractController
         }
 
         try {
+            throw new Exception('rekt');
             $carInfo = $this->carClient->getCarInfo($id);
             $car = $this->carRepository->findOneBy(['remoteId' => $id]);
 
@@ -88,8 +89,7 @@ class CarController extends AbstractController
                 $this->entityManager->flush();
             }
         } catch (Exception $exception) {
-            //TODO show error message on page
-            // $this->session->getFlashBag()->add('error', $exception->getMessage());
+            $this->addFlash('error', $exception->getMessage());
         }
 
         return $this->redirectToRoute('list-cars');
