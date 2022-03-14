@@ -206,6 +206,15 @@ RUN \
     echo "stdout_events_enabled = true" >> /etc/supervisor/conf.d/supervisord.conf && \
     echo "stderr_events_enabled = true" >> /etc/supervisor/conf.d/supervisord.conf
 
+# cron supervisor config
+RUN \
+    echo "[program:cron]" >> /etc/supervisor/conf.d/supervisord.conf && \
+    echo "command = cron -f" >> /etc/supervisor/conf.d/supervisord.conf && \
+    echo "user = root" >> /etc/supervisor/conf.d/supervisord.conf && \
+    echo "autostart = true" >> /etc/supervisor/conf.d/supervisord.conf && \
+    echo "stdout_events_enabled = true" >> /etc/supervisor/conf.d/supervisord.conf && \
+    echo "stderr_events_enabled = true" >> /etc/supervisor/conf.d/supervisord.conf
+
 RUN \
     apt-get -y purge '^php7.4.*' && \
     apt-get -y purge '^php8.1.*'
