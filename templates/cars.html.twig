@@ -24,12 +24,18 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>{{ knp_pagination_sortable(cars, 'ID', 'c.id') }}</th>
                     <th>Remote ID</th>
                     <th>Title</th>
-                    <th>Price</th>
-                    <th>Updated</th>
-                    <th>Created</th>
+                    <th{% if cars.isSorted(['c.amount']) %} class="sorted"{% endif %}>
+                        {{ knp_pagination_sortable(cars, 'Price', 'c.amount') }}
+                    </th>
+                    <th{% if cars.isSorted(['c.updated']) %} class="sorted"{% endif %}>
+                        {{ knp_pagination_sortable(cars, 'Updated', 'c.updated') }}
+                    </th>
+                    <th {% if cars.isSorted(['c.created']) %} class="sorted"{% endif %}>
+                        {{ knp_pagination_sortable(cars, 'Created', 'c.created') }}
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -47,5 +53,8 @@
             {% endfor %}
             </tbody>
         </table>
+        <div class="navigation">
+            {{ knp_pagination_render(cars, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+        </div>
     </div>
 {% endblock %}

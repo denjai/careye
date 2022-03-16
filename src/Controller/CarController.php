@@ -10,6 +10,7 @@ use App\Services\CarClient;
 use App\Services\CarResultTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,30 +23,44 @@ class CarController extends AbstractController
     private CarClient $carClient;
     private CarResultTransformer $carResultTransformer;
     private EntityManagerInterface $entityManager;
+    private PaginatorInterface $paginator;
 
     public function __construct(
         CarRepository $carRepository,
         CarHistoryRepository $carHistoryRepository,
         CarClient $carClient,
         CarResultTransformer $carResultTransformer,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        PaginatorInterface $paginator
     ) {
         $this->carRepository = $carRepository;
         $this->carHistoryRepository = $carHistoryRepository;
         $this->carClient = $carClient;
         $this->carResultTransformer = $carResultTransformer;
         $this->entityManager = $entityManager;
+        $this->paginator = $paginator;
     }
 
     /**
      * @Route("/", methods={"GET"}, name="list-cars")
      */
-    public function listCars(): Response
+    public function listCars(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $cars = $this->carRepository->findBy(['user' => $this->getUser()]);
-        //TODO add pagination
+        $query = $this->carRepository
+            ->createQueryBuilder('c')
+            ->where('c.user = :user')
+            ->setParameter('user', $this->getUser())
+            ->orderBy('c.id', 'ASC')
+        ;
+
+        $cars = $this->paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            15
+        );
+
         return $this->render('cars.html.twig', ['cars' => $cars]);
     }
 
