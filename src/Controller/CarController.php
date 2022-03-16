@@ -67,6 +67,7 @@ class CarController extends AbstractController
      */
     public function addCar(Request $request): Response
     {
+        $failed = false;
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $id = $request->request->get('id');
 
@@ -89,6 +90,10 @@ class CarController extends AbstractController
             }
         } catch (Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
+            $failed =  true;
+        }
+        if (!$failed) {
+            $this->addFlash('success', 'Successfully added.');
         }
 
         return $this->redirectToRoute('list-cars');

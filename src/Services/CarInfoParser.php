@@ -73,9 +73,9 @@ class CarInfoParser
             if (preg_match('/\d{2}:\d{2}/', $dateString, $matches)){
                 $time = $matches[0];
             }
-            preg_match('/\d{1,2}\s\D{2,10}\s\d{4}/', $dateString, $matches);
-
-            return new DateTimeImmutable($this->monthMapper->getMonth($matches[0] . $time));
+            if (preg_match('/\d{1,2}\s\D{2,30}\s\d{4}/iu', $dateString, $matches) === 1) {
+                return new DateTimeImmutable($this->monthMapper->getMonth($matches[0] . $time));
+            }
         }
 
         return null;
