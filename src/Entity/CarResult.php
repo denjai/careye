@@ -13,6 +13,7 @@ class CarResult
     private string $title;
     private ?DateTimeImmutable $cratedAt;
     private ?DateTimeImmutable $updatedAt;
+    private string $remoteId;
 
     public function __construct()
     {
@@ -61,6 +62,17 @@ class CarResult
     public function setUpdatedAt(?DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    public function getRemoteId(): string
+    {
+        return $this->remoteId;
+    }
+
+    public function setRemoteId(string $remoteId): self
+    {
+        $this->remoteId = $remoteId;
         return $this;
     }
 }

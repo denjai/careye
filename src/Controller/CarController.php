@@ -7,7 +7,7 @@ namespace App\Controller;
 use App\Repository\CarHistoryRepository;
 use App\Repository\CarRepository;
 use App\Services\CarClient;
-use App\Services\CarResultTransformer;
+use App\Services\CarManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
@@ -21,7 +21,7 @@ class CarController extends AbstractController
     private CarRepository $carRepository;
     private CarHistoryRepository $carHistoryRepository;
     private CarClient $carClient;
-    private CarResultTransformer $carResultTransformer;
+    private CarManager $carManager;
     private EntityManagerInterface $entityManager;
     private PaginatorInterface $paginator;
 
@@ -29,14 +29,14 @@ class CarController extends AbstractController
         CarRepository $carRepository,
         CarHistoryRepository $carHistoryRepository,
         CarClient $carClient,
-        CarResultTransformer $carResultTransformer,
+        CarManager $carManager,
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator
     ) {
         $this->carRepository = $carRepository;
         $this->carHistoryRepository = $carHistoryRepository;
         $this->carClient = $carClient;
-        $this->carResultTransformer = $carResultTransformer;
+        $this->carManager = $carManager;
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
     }
@@ -95,12 +95,7 @@ class CarController extends AbstractController
             $car = $this->carRepository->findOneBy(['remoteId' => $id]);
 
             if ($car === null) {
-                $car = $this->carResultTransformer
-                    ->transform($carInfo)
-                    ->setRemoteId($id)
-                    ->setUser($this->getUser())
-                ;
-                $this->entityManager->persist($car);
+                $this->carManager->createCar($carInfo, $this->getUser());
                 $this->entityManager->flush();
             }
         } catch (Exception $exception) {

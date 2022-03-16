@@ -27,7 +27,7 @@ class CarClient
             ->filter('form[name="search"]')
         ;
 
-        return $this->carInfoParser->parse($crawler);
+        return $this->carInfoParser->parse($crawler)->setRemoteId($id);
     }
 
     private function buildUrl(string $id): string
