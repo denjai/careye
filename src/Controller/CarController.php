@@ -56,7 +56,7 @@ class CarController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $car = $this->carRepository->findBy(['id' => $id, 'user' => $this->getUser()]);
+        $car = $this->carRepository->findOneBy(['id' => $id, 'user' => $this->getUser()]);
         $carHistory = $this->carHistoryRepository->findBy(['car' => $car]);
 
         return $this->render('car.html.twig', ['car' => $car, 'carHistory' => $carHistory]);

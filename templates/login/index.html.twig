@@ -7,20 +7,26 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('login') }}" method="post">
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <form action="{{ path('login') }}" method="post">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+                <div class="form-group mb-2 mt-3">
+                    <label for="username">Email:</label>
+                    <input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}"
+                           placeholder="Enter username"/>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" class="form-control" name="_password" placeholder="Password"/>
+                </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password"/>
+                {# If you want to control the URL the user is redirected to on success #}
+                <input type="hidden" name="_target_path" value="{{ path('list-cars') }}"/>
 
-        {# If you want to control the URL the user is redirected to on success #}
-        <input type="hidden" name="_target_path" value="{{ path('list-cars') }}"/>
-
-        <button type="submit">login</button>
-    </form>
-    <hr/>
-    <a href="{{ path('app_register') }}">Register</a>
+                <button type="submit" class="btn btn-primary">login</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

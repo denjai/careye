@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {% block stylesheets %}
-            <link rel="stylesheet" type="text/css" href="{{ asset_version('/build/app.css') }}"/>
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
     <body>
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <p>LOGGED IN USER: {{ app.user.username }}</p>
-            <form action="{{ path('app_logout') }}" method="get">
-                <button type="submit">log out</button>
-            </form>
-        {% endif %}
-        {% block body %}{% endblock %}
+        {% include '/page/navbar.html.twig' ignore missing %}
 
-        {% block javascripts %}
-            <script src="{{ asset('/build/app.js') }}"></script>
-        {% endblock %}
+        <div class="container">
+            {% block body %}{% endblock %}
+
+            {% include '/page/footer.html.twig' ignore missing %}
+        </div>
     </body>
 </html>
