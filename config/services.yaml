@@ -25,9 +25,14 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Migrations'
+            - '../src/Listener'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
     Symfony\Component\BrowserKit\HttpBrowser:
         autowire: true
+
+    App\Listener\CarListener:
+        tags:
+            - { name: kernel.event_listener, event: car.updated, method: onCarUpdated }

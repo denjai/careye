@@ -98,7 +98,8 @@ RUN \
                        php8.0-bcmath \
                        php8.0-soap \
                        php8.0-xml \
-                       php8.0-pgsql
+                       php8.0-pgsql \
+                       php8.0-amqp
 
 
 # Disable phpmods
@@ -214,6 +215,11 @@ RUN \
     echo "autostart = true" >> /etc/supervisor/conf.d/supervisord.conf && \
     echo "stdout_events_enabled = true" >> /etc/supervisor/conf.d/supervisord.conf && \
     echo "stderr_events_enabled = true" >> /etc/supervisor/conf.d/supervisord.conf
+
+# append additional supervisor config from project
+ADD config/supervisor.conf /tmp/supervisor.conf
+RUN \
+    cat /tmp/supervisor.conf >> /etc/supervisor/conf.d/supervisord.conf
 
 RUN \
     apt-get -y purge '^php7.4.*' && \

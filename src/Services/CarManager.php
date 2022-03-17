@@ -6,7 +6,9 @@ namespace App\Services;
 
 use App\Entity\Car;
 use App\Entity\CarResult;
+use App\Event\CarUpdatedEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class CarManager
@@ -14,15 +16,18 @@ class CarManager
     private CarHistoryFactory $carHistoryFactory;
     private EntityManagerInterface $entityManager;
     private CarResultTransformer $carResultTransformer;
+    private EventDispatcherInterface $dispatcher;
 
     public function __construct(
         CarHistoryFactory $carHistoryFactory,
         EntityManagerInterface $entityManager,
-        CarResultTransformer $carResultTransformer
+        CarResultTransformer $carResultTransformer,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->carHistoryFactory = $carHistoryFactory;
         $this->entityManager = $entityManager;
         $this->carResultTransformer = $carResultTransformer;
+        $this->dispatcher = $dispatcher;
     }
 
     public function createCar(CarResult $carResult, UserInterface $user)
@@ -44,6 +49,8 @@ class CarManager
 
             $carHistory = $this->carHistoryFactory->createFromCarResult($carResult, $car);
             $this->entityManager->persist($carHistory);
+
+            $this->dispatchCardUpdatedEvent($car);
         }
     }
 
@@ -57,6 +64,13 @@ class CarManager
 
             $carHistory = $this->carHistoryFactory->createFromCarResult($carResult, $car);
             $this->entityManager->persist($carHistory);
+
+            $this->dispatchCardUpdatedEvent($car);
         }
+    }
+
+    private function dispatchCardUpdatedEvent($car)
+    {
+        $this->dispatcher->dispatch(new CarUpdatedEvent($car), CarUpdatedEvent::NAME);
     }
 }
