@@ -9,7 +9,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class CarUpdatedEvent extends Event
 {
-    public const NAME = 'car.updated';
+    public const NAME_PRICE_UPDATED = 'car.price_updated';
 
     private Car $car;
 

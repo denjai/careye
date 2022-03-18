@@ -8,7 +8,7 @@ use App\Event\CarUpdatedEvent;
 
 class CarListener
 {
-    public function onCarUpdated(CarUpdatedEvent $carUpdatedEvent)
+    public function onCarPriceUpdated(CarUpdatedEvent $carUpdatedEvent)
     {
         //var_dump($carUpdatedEvent->getCar());
         //TODO send notification

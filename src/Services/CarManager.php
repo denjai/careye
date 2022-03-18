@@ -50,7 +50,7 @@ class CarManager
             $carHistory = $this->carHistoryFactory->createFromCarResult($carResult, $car);
             $this->entityManager->persist($carHistory);
 
-            $this->dispatchCardUpdatedEvent($car);
+            $this->dispatchCardPriceUpdatedEvent($car);
         }
     }
 
@@ -64,13 +64,11 @@ class CarManager
 
             $carHistory = $this->carHistoryFactory->createFromCarResult($carResult, $car);
             $this->entityManager->persist($carHistory);
-
-            $this->dispatchCardUpdatedEvent($car);
         }
     }
 
-    private function dispatchCardUpdatedEvent($car)
+    private function dispatchCardPriceUpdatedEvent($car)
     {
-        $this->dispatcher->dispatch(new CarUpdatedEvent($car), CarUpdatedEvent::NAME);
+        $this->dispatcher->dispatch(new CarUpdatedEvent($car), CarUpdatedEvent::NAME_PRICE_UPDATED);
     }
 }

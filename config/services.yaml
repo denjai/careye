@@ -35,4 +35,4 @@ services:
 
     App\Listener\CarListener:
         tags:
-            - { name: kernel.event_listener, event: car.updated, method: onCarUpdated }
+            - { name: kernel.event_listener, event: car.price_updated, method: onCarPriceUpdated }
