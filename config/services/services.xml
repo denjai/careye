@@ -27,6 +27,16 @@
             <parameter type="string">11422556894849978</parameter>
             <parameter type="string">11624089160658815</parameter>
         </parameter>
+
+        <parameter type="collection" key="app.site_url_templates">
+            <parameter type="string" key="mobile">https://www.mobile.bg/pcgi/mobile.cgi?act=4&amp;adv=%%s</parameter>
+            <parameter type="string" key="cars">https://www.cars.bg/offer/%%s</parameter>
+        </parameter>
+
+        <parameter type="string" key="app.default_api">mobile</parameter>
+        <parameter type="string" key="app.mobile_api_key">mobile</parameter>
+        <parameter type="string" key="app.cars_api_key">cars</parameter>
+
     </parameters>
 
     <!-- ... -->
