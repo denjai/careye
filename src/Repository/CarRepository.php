@@ -14,4 +14,15 @@ class CarRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Car::class);
     }
+
+    /**
+     * @return iterable|Car[]
+     */
+    public function getAllIterableResult()
+    {
+        return $this->createQueryBuilder('c')
+            ->getQuery()
+            ->toIterable()
+        ;
+    }
 }

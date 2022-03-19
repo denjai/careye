@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Exception\CarAdvertDeletedException;
 use App\Repository\CarRepository;
 use App\Services\CarClient;
 use App\Services\CarManager;
@@ -17,33 +18,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProcessCarsCommand extends Command
 {
-    private LoginClient $loginClient;
     private CarClient $carClient;
-    private array $cardCheckList;
     private EntityManagerInterface $entityManager;
     private CarRepository $carRepository;
-    private CarResultTransformer $carResultTransformer;
     private CarManager $carManager;
     private LoggerInterface $logger;
 
     public function __construct(
-        LoginClient $loginClient,
         CarClient $carClient,
-        array $cardCheckList,
         EntityManagerInterface $entityManager,
         CarRepository $carRepository,
-        CarResultTransformer $carResultTransformer,
         CarManager $carManager,
         LoggerInterface $logger
     ) {
         parent::__construct();
 
-        $this->loginClient = $loginClient;
         $this->carClient = $carClient;
-        $this->cardCheckList = $cardCheckList;
         $this->entityManager = $entityManager;
         $this->carRepository = $carRepository;
-        $this->carResultTransformer = $carResultTransformer;
         $this->carManager = $carManager;
         $this->logger = $logger;
     }
@@ -58,25 +50,17 @@ class ProcessCarsCommand extends Command
         $this->logger->info('Processing cars...');
         $output->writeln('Processing cars...');
 
-        foreach ($this->cardCheckList as $carId) {
+        foreach ($this->carRepository->getAllIterableResult() as $car) {
             try {
-                $carInfo = $this->carClient->getCarInfo($carId);
+                $carInfo = $this->carClient->getCarInfo($car->getRemoteId());
             } catch (InvalidArgumentException $exception) {
                 continue;
+            } catch (CarAdvertDeletedException $carAdvertDeletedException) {
+                //TODO change status in DB
             }
 
-            $car = $this->carRepository->findOneBy(['remoteId' => $carId]);
-
-            if ($car !== null) {
-                $this->carManager->updatePrice($car, $carInfo);
-                $this->carManager->updateDates($car, $carInfo);
-            } else {
-                $car = $this->carResultTransformer
-                    ->transform($carInfo)
-                    ->setRemoteId($carId)
-                ;
-                $this->entityManager->persist($car);
-            }
+            $this->carManager->updatePrice($car, $carInfo);
+            $this->carManager->updateDates($car, $carInfo);
         }
 
         $this->entityManager->flush();
