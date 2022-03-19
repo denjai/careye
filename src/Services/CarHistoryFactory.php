@@ -18,4 +18,13 @@ class CarHistoryFactory
             ->setCar($car)
         ;
     }
+
+    public function createFromCar(Car $car): CarHistory
+    {
+        return (new CarHistory())
+            ->setPrice($car->getPrice())
+            ->setAdvertUpdated($car->getUpdated())
+            ->setCar($car)
+        ;
+    }
 }

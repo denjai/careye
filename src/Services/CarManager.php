@@ -67,7 +67,19 @@ class CarManager
         }
     }
 
-    private function dispatchCardPriceUpdatedEvent($car)
+    public function changeStatus(Car $car, string $newStatus): void
+    {
+        if (!in_array($newStatus, Car::STATUSES)) {
+            return;
+        }
+
+        $car->setStatus($newStatus);
+
+        $carHistory = $this->carHistoryFactory->createFromCar($car);
+        $this->entityManager->persist($carHistory);
+    }
+
+    private function dispatchCardPriceUpdatedEvent($car): void
     {
         $this->dispatcher->dispatch(new CarUpdatedEvent($car), CarUpdatedEvent::NAME_PRICE_UPDATED);
     }

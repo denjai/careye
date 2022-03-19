@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Entity\Car;
 use App\Exception\CarAdvertDeletedException;
 use App\Repository\CarRepository;
 use App\Services\CarClient;
 use App\Services\CarManager;
-use App\Services\CarResultTransformer;
-use App\Services\LoginClient;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
@@ -50,13 +49,12 @@ class ProcessCarsCommand extends Command
         $this->logger->info('Processing cars...');
         $output->writeln('Processing cars...');
 
-        foreach ($this->carRepository->getAllIterableResult() as $car) {
+        foreach ($this->carRepository->getAllActiveIterableResult() as $car) {
             try {
                 $carInfo = $this->carClient->getCarInfo($car->getRemoteId());
             } catch (InvalidArgumentException $exception) {
+                $this->carManager->changeStatus($car, Car::STATUS_CLOSED);
                 continue;
-            } catch (CarAdvertDeletedException $carAdvertDeletedException) {
-                //TODO change status in DB
             }
 
             $this->carManager->updatePrice($car, $carInfo);

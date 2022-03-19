@@ -18,9 +18,11 @@ class CarRepository extends ServiceEntityRepository
     /**
      * @return iterable|Car[]
      */
-    public function getAllIterableResult()
+    public function getAllActiveIterableResult()
     {
         return $this->createQueryBuilder('c')
+            ->where('c.status = :status')
+            ->setParameter('status', Car::STATUS_ACTIVE)
             ->getQuery()
             ->toIterable()
         ;

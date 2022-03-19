@@ -14,7 +14,6 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
-            $cardCheckList: '%app.car_check_list%'
             $siteUrlTemplates: '%app.site_url_templates%'
             $defaultApiKey: '%app.default_api%'
 

@@ -10,6 +10,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class Car
 {
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_CLOSED = 'closed';
+    public const STATUSES = [
+        self::STATUS_ACTIVE => self::STATUS_ACTIVE,
+        self::STATUS_CLOSED => self::STATUS_CLOSED,
+    ];
+
+
     private int $id;
     private string $remoteId;
     private UserInterface $user;
@@ -18,11 +26,13 @@ class Car
     private string $currency;
     private ?DateTimeImmutable $created;
     private ?DateTimeImmutable $updated;
+    private string $status;
 
     public function __construct()
     {
         $this->created = null;
         $this->updated = null;
+        $this->status = self::STATUS_ACTIVE;
     }
 
     public function getId(): int
@@ -100,6 +110,17 @@ class Car
     public function setUpdated(?DateTimeImmutable $updated): self
     {
         $this->updated = $updated;
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
         return $this;
     }
 }

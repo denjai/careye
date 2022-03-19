@@ -9,12 +9,21 @@
             <generator strategy="AUTO"/>
         </id>
 
+        <indexes>
+            <index columns="status"/>
+        </indexes>
+
         <field name="remoteId" column="remote_id" type="string" length="50" unique="true" />
         <field name="title" column="title" type="string"/>
         <field name="amount" column="amount" type="string"/>
         <field name="currency" column="currency" type="string"/>
         <field name="updated" column="updated" type="datetime_immutable" nullable="true"/>
         <field name="created" column="created" type="datetime_immutable" nullable="true"/>
+        <field name="status" column="status" type="string" length="10">
+            <options>
+                <option name="default">active</option>
+            </options>
+        </field>
 
         <many-to-one field="user" target-entity="App\Entity\User" inversed-by="cars">
             <join-column name="user_id" referenced-column-name="id"/>
