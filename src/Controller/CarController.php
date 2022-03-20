@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Repository\CarHistoryRepository;
 use App\Repository\CarRepository;
-use App\Services\CarClient;
+use App\Services\MobileClient;
 use App\Services\CarManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -20,18 +20,18 @@ class CarController extends AbstractController
 {
     private CarRepository $carRepository;
     private CarHistoryRepository $carHistoryRepository;
-    private CarClient $carClient;
+    private MobileClient $carClient;
     private CarManager $carManager;
     private EntityManagerInterface $entityManager;
     private PaginatorInterface $paginator;
 
     public function __construct(
-        CarRepository $carRepository,
-        CarHistoryRepository $carHistoryRepository,
-        CarClient $carClient,
-        CarManager $carManager,
+        CarRepository          $carRepository,
+        CarHistoryRepository   $carHistoryRepository,
+        MobileClient           $carClient,
+        CarManager             $carManager,
         EntityManagerInterface $entityManager,
-        PaginatorInterface $paginator
+        PaginatorInterface     $paginator
     ) {
         $this->carRepository = $carRepository;
         $this->carHistoryRepository = $carHistoryRepository;

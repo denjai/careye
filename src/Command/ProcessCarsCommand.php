@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\Car;
-use App\Exception\CarAdvertDeletedException;
 use App\Repository\CarRepository;
-use App\Services\CarClient;
+use App\Services\MobileClient;
 use App\Services\CarManager;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
@@ -17,18 +16,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProcessCarsCommand extends Command
 {
-    private CarClient $carClient;
+    private MobileClient $carClient;
     private EntityManagerInterface $entityManager;
     private CarRepository $carRepository;
     private CarManager $carManager;
     private LoggerInterface $logger;
 
     public function __construct(
-        CarClient $carClient,
+        MobileClient           $carClient,
         EntityManagerInterface $entityManager,
-        CarRepository $carRepository,
-        CarManager $carManager,
-        LoggerInterface $logger
+        CarRepository          $carRepository,
+        CarManager             $carManager,
+        LoggerInterface        $logger
     ) {
         parent::__construct();
 

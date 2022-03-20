@@ -7,17 +7,17 @@ namespace App\Services;
 use App\Entity\CarResult;
 use Symfony\Component\BrowserKit\HttpBrowser;
 
-class CarClient
+class MobileClient implements CarClientInterface
 {
     public const BASE_URL = 'https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv=%s';
 
     private HttpBrowser $browser;
-    private CarInfoParser $carInfoParser;
+    private MobileParser $mobileParser;
 
-    public function __construct(HttpBrowser $browser, CarInfoParser $carInfoParser)
+    public function __construct(HttpBrowser $browser, MobileParser $mobileParser)
     {
         $this->browser = $browser;
-        $this->carInfoParser = $carInfoParser;
+        $this->mobileParser = $mobileParser;
     }
 
     public function getCarInfo(string $id): CarResult
@@ -27,7 +27,7 @@ class CarClient
             ->filter('form[name="search"]')
         ;
 
-        return $this->carInfoParser->parse($crawler)->setRemoteId($id);
+        return $this->mobileParser->parse($crawler)->setRemoteId($id);
     }
 
     private function buildUrl(string $id): string

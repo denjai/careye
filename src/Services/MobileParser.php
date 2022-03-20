@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entity\CarResult;
-use App\Exception\CarAdvertDeletedException;
 use DateTimeImmutable;
 use Evp\Component\Money\Money;
 use InvalidArgumentException;
 use Symfony\Component\DomCrawler\Crawler;
 
-class CarInfoParser
+class MobileParser
 {
     private MonthMapper $monthMapper;
 
