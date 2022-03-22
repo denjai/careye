@@ -38,7 +38,6 @@ class MobileClient implements CarClientInterface
             throw new CarInfoServerException(sprintf('Car info server not responding  %s ;', self::BASE_URL));
         }
 
-
         return $this->mobileParser->parse($crawler)->setRemoteId($id);
     }
 

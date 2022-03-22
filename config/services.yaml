@@ -37,3 +37,10 @@ services:
     App\Listener\CarListener:
         tags:
             - { name: kernel.event_listener, event: car.price_updated, method: onCarPriceUpdated }
+
+    App\Services\SourceAwareCarClient:
+        arguments:
+            - {'mobile': '@App\Services\MobileClient', 'carsbg': '@App\Services\CarsBgClient'}
+    App\Services\CarSourceProvider:
+        arguments:
+            - {'mobile': '/mobile.bg/', 'carsbg': '/cars.bg/'}

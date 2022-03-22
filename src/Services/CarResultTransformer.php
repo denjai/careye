@@ -17,6 +17,7 @@ class CarResultTransformer
             ->setCreated($carResult->getCratedAt())
             ->setUpdated($carResult->getUpdatedAt())
             ->setRemoteId($carResult->getRemoteId())
+            ->setSource($carResult->getSource())
         ;
     }
 }

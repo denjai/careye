@@ -6,10 +6,12 @@ namespace App\Controller;
 
 use App\Repository\CarHistoryRepository;
 use App\Repository\CarRepository;
-use App\Services\MobileClient;
+use App\Services\CarSourceProvider;
 use App\Services\CarManager;
+use App\Services\SourceAwareCarClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use InvalidArgumentException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,18 +22,20 @@ class CarController extends AbstractController
 {
     private CarRepository $carRepository;
     private CarHistoryRepository $carHistoryRepository;
-    private MobileClient $carClient;
+    private SourceAwareCarClient $carClient;
     private CarManager $carManager;
     private EntityManagerInterface $entityManager;
     private PaginatorInterface $paginator;
+    private CarSourceProvider $carSourceProvider;
 
     public function __construct(
         CarRepository          $carRepository,
         CarHistoryRepository   $carHistoryRepository,
-        MobileClient           $carClient,
+        SourceAwareCarClient   $carClient,
         CarManager             $carManager,
         EntityManagerInterface $entityManager,
-        PaginatorInterface     $paginator
+        PaginatorInterface     $paginator,
+        CarSourceProvider $carSourceProvider
     ) {
         $this->carRepository = $carRepository;
         $this->carHistoryRepository = $carHistoryRepository;
@@ -39,6 +43,7 @@ class CarController extends AbstractController
         $this->carManager = $carManager;
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
+        $this->carSourceProvider = $carSourceProvider;
     }
 
     /**
@@ -86,12 +91,20 @@ class CarController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $id = $request->request->get('id');
 
+        try {
+            $source = $this->carSourceProvider->getSource($id);
+        } catch (InvalidArgumentException $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('list-cars');
+        }
+
+
         if (preg_match('/\d{15,22}/', $id, $matches)) {
             $id = $matches[0];
         }
 
         try {
-            $carInfo = $this->carClient->getCarInfo($id);
+            $carInfo = $this->carClient->getCarInfo($id, $source);
             $car = $this->carRepository->findOneBy(['remoteId' => $id]);
 
             if ($car === null) {

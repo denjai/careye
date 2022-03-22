@@ -24,6 +24,11 @@
                 <option name="default">active</option>
             </options>
         </field>
+        <field name="source" column="source" type="string" length="20">
+            <options>
+                <option name="default">mobile</option>
+            </options>
+        </field>
 
         <many-to-one field="user" target-entity="App\Entity\User" inversed-by="cars">
             <join-column name="user_id" referenced-column-name="id"/>

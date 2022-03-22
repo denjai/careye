@@ -8,6 +8,7 @@ use App\Exception\CarInfoServerException;
 use App\Repository\CarRepository;
 use App\Services\MobileClient;
 use App\Services\CarManager;
+use App\Services\SourceAwareCarClient;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
@@ -17,14 +18,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProcessCarsCommand extends Command
 {
-    private MobileClient $carClient;
+    private SourceAwareCarClient $carClient;
     private EntityManagerInterface $entityManager;
     private CarRepository $carRepository;
     private CarManager $carManager;
     private LoggerInterface $logger;
 
     public function __construct(
-        MobileClient           $carClient,
+        SourceAwareCarClient           $carClient,
         EntityManagerInterface $entityManager,
         CarRepository          $carRepository,
         CarManager             $carManager,
@@ -51,7 +52,7 @@ class ProcessCarsCommand extends Command
 
         foreach ($this->carRepository->getAllActiveIterableResult() as $car) {
             try {
-                $carInfo = $this->carClient->getCarInfo($car->getRemoteId());
+                $carInfo = $this->carClient->getCarInfo($car->getRemoteId(), 'mobile');
             } catch (InvalidArgumentException $exception) {
                 $this->carManager->changeStatus($car, Car::STATUS_CLOSED);
                 continue;
