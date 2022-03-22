@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\Car;
+use App\Exception\CarInfoServerException;
 use App\Repository\CarRepository;
 use App\Services\MobileClient;
 use App\Services\CarManager;
@@ -53,6 +54,8 @@ class ProcessCarsCommand extends Command
                 $carInfo = $this->carClient->getCarInfo($car->getRemoteId());
             } catch (InvalidArgumentException $exception) {
                 $this->carManager->changeStatus($car, Car::STATUS_CLOSED);
+                continue;
+            } catch (CarInfoServerException $serverException) {
                 continue;
             }
 

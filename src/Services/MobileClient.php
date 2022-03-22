@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entity\CarResult;
+use App\Exception\CarInfoServerException;
+use InvalidArgumentException;
 use Symfony\Component\BrowserKit\HttpBrowser;
+use Symfony\Component\HttpFoundation\Response;
 
 class MobileClient implements CarClientInterface
 {
@@ -26,6 +29,15 @@ class MobileClient implements CarClientInterface
             ->request('GET', $this->buildUrl($id))
             ->filter('form[name="search"]')
         ;
+
+        if ($this->browser->getResponse()->getStatusCode() === Response::HTTP_NOT_FOUND) {
+            throw new InvalidArgumentException(sprintf('Car info for card %s not found;', $crawler->getUri()));
+        }
+
+        if ($this->browser->getResponse()->getStatusCode() === Response::HTTP_BAD_GATEWAY) {
+            throw new CarInfoServerException(sprintf('Car info server not responding  %s ;', self::BASE_URL));
+        }
+
 
         return $this->mobileParser->parse($crawler)->setRemoteId($id);
     }
