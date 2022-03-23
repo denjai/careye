@@ -24,7 +24,6 @@ class CarsBgClient implements CarClientInterface
     {
         $crawler = $this->browser
             ->request('GET', $this->buildUrl($id))
-            ->filter('.main-content')
         ;
 
         return $this->carsBgParser->parse($crawler)->setRemoteId($id);

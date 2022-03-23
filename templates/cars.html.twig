@@ -43,7 +43,11 @@
                 <tr>
                     <td><a href="{{ path('car-info', {id: car.id}) }}" target="_blank">{{ car.id }}</a></td>
                     <td>
-                        <a href="https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv={{ car.remoteId }}" target="_blank">{{ car.remoteId }}</a>
+                        {% if car.source is same as 'mobile' %}
+                            <a href="https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv={{ car.remoteId }}" target="_blank">{{ car.remoteId }}</a>
+                        {% else %}
+                            <a href="https://www.cars.bg/offer/{{ car.remoteId }}" target="_blank">{{ car.remoteId }}</a>
+                        {% endif %}
                     </td>
                     <td>{{ car.title }}</td>
                     <td>{{ car.price }}</td>

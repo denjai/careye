@@ -99,7 +99,7 @@ class CarController extends AbstractController
         }
 
 
-        if (preg_match('/\d{15,22}/', $id, $matches)) {
+        if (preg_match('/\d{15,22}|[A-Za-z]+[\d@]+[\w@]*|[\d@]+[A-Za-z]+[\w@]*/', $id, $matches)) {
             $id = $matches[0];
         }
 
