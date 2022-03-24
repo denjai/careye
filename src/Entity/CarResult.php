@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Evp\Component\Money\Money;
 
 class CarResult
@@ -15,11 +16,13 @@ class CarResult
     private ?DateTimeImmutable $updatedAt;
     private string $remoteId;
     private string $source;
+    private ArrayCollection $images;
 
     public function __construct()
     {
         $this->cratedAt = null;
         $this->updatedAt = null;
+        $this->images = new ArrayCollection();
     }
 
     public function getPrice(): Money
@@ -85,6 +88,17 @@ class CarResult
     public function setSource(string $source): self
     {
         $this->source = $source;
+        return $this;
+    }
+
+    public function getImages(): ArrayCollection
+    {
+        return $this->images;
+    }
+
+    public function addImage(string $image): self
+    {
+        $this->images[] = $image;
         return $this;
     }
 }

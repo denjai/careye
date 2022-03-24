@@ -40,6 +40,10 @@ class MobileParser
             $result->setUpdatedAt($updatedAt);
         }
 
+        foreach ($this->getImages($crawler) as $image) {
+            $result->addImage($image);
+        }
+
         return $result;
     }
 
@@ -97,5 +101,16 @@ class MobileParser
         }
 
         return null;
+    }
+
+    private function getImages(Crawler $crawler): array
+    {
+        $urls = $crawler->filter('.img .smallHolder img')->extract(['src']);
+
+        array_walk($urls, function (&$value, $key) {
+            $value = 'https:' . preg_replace('/med/', 'big', $value);
+        });
+
+        return $urls;
     }
 }

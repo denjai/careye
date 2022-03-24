@@ -29,6 +29,10 @@ class CarsBgParser
             $result->setCratedAt($createdAt);
         }
 
+        foreach ($this->getImages($crawler) as $image) {
+            $result->addImage($image);
+        }
+
         return $result;
     }
 
@@ -70,5 +74,10 @@ class CarsBgParser
         }
 
         return new DateTimeImmutable($dateString);
+    }
+
+    private function getImages(Crawler $crawler): array
+    {
+        return $crawler->filter('#smallgallery img')->extract(['data-src']);
     }
 }

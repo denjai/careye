@@ -79,7 +79,10 @@ class CarController extends AbstractController
         $car = $this->carRepository->findOneBy(['id' => $id, 'user' => $this->getUser()]);
         $carHistory = $this->carHistoryRepository->findBy(['car' => $car]);
 
-        return $this->render('car.html.twig', ['car' => $car, 'carHistory' => $carHistory]);
+        return $this->render(
+            'car.html.twig',
+            ['car' => $car, 'carHistory' => $carHistory]
+        );
     }
 
     /**

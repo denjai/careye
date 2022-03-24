@@ -33,6 +33,8 @@
         <many-to-one field="user" target-entity="App\Entity\User" inversed-by="cars">
             <join-column name="user_id" referenced-column-name="id"/>
         </many-to-one>
+
+        <one-to-many field="images" target-entity="App\Entity\Image" mapped-by="car"/>
     </entity>
 
 </doctrine-mapping>

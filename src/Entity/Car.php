@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Evp\Component\Money\Money;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -28,12 +30,14 @@ class Car
     private ?DateTimeImmutable $updated;
     private string $status;
     private string $source;
+    private Collection $images;
 
     public function __construct()
     {
         $this->created = null;
         $this->updated = null;
         $this->status = self::STATUS_ACTIVE;
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): int
@@ -133,6 +137,17 @@ class Car
     public function setSource(string $source): self
     {
         $this->source = $source;
+        return $this;
+    }
+
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        $this->images[] = $image;
         return $this;
     }
 }
