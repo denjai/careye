@@ -38,6 +38,10 @@ class CarManager
         ;
         $this->entityManager->persist($car);
 
+        foreach ($this->carResultTransformer->transformImages($carResult) as $image){
+            $this->entityManager->persist($image->setCar($car));
+        }
+
         $carHistory = $this->carHistoryFactory->createFromCarResult($carResult, $car);
         $this->entityManager->persist($carHistory);
     }
