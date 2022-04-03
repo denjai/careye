@@ -108,7 +108,7 @@ class CarController extends AbstractController
 
         try {
             $carInfo = $this->carClient->getCarInfo($id, $source);
-            $car = $this->carRepository->findOneBy(['remoteId' => $id]);
+            $car = $this->carRepository->findOneBy(['remoteId' => $id, 'user' => $this->getUser()]);
 
             if ($car === null) {
                 $this->carManager->createCar($carInfo, $this->getUser());

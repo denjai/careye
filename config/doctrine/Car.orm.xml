@@ -12,8 +12,11 @@
         <indexes>
             <index columns="status"/>
         </indexes>
+        <unique-constraints>
+            <unique-constraint columns="remote_id,user_id"/>
+        </unique-constraints>
 
-        <field name="remoteId" column="remote_id" type="string" length="50" unique="true" />
+        <field name="remoteId" column="remote_id" type="string" length="50"/>
         <field name="title" column="title" type="string"/>
         <field name="amount" column="amount" type="string"/>
         <field name="currency" column="currency" type="string"/>
